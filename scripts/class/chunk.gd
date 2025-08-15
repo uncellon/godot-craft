@@ -66,7 +66,7 @@ func draw() -> void:
 	for x in range(DIMENSIONS.x):
 		for y in range(DIMENSIONS.y):
 			for z in range(DIMENSIONS.z):
-				if block_ids[x][y][z] != BlockDatabase.Id.AIR:
+				if block_ids[x][y][z] != ItemsDatabase.Id.AIR:
 					draw_block(
 						Vector3i(x, y, z),
 						Vector3i(chunk_position.x * DIMENSIONS.x + x, y, chunk_position.y * DIMENSIONS.z + z),
@@ -81,34 +81,34 @@ func draw() -> void:
 	mesh_instance_3d.mesh = mesh
 	collision_shape_3d.shape = mesh.create_trimesh_shape()
 
-func draw_block(block_pos_chunk: Vector3i, block_pos_world: Vector3i, block_id: BlockDatabase.Id) -> void:
+func draw_block(block_pos_chunk: Vector3i, block_pos_world: Vector3i, block_id: ItemsDatabase.Id) -> void:
 	if is_transparent(block_pos_chunk.x, block_pos_chunk.y + 1, block_pos_chunk.z):
-		var texture_slice = BlockDatabase.get_texture_indices(block_id)[BlockDatabase.Side.TOP] + \
+		var texture_slice = ItemsDatabase.get_texture_indices(block_id)[ItemsDatabase.Side.TOP] + \
 			material.get_shader_parameter("texture_array").get_texture_slice_offset(block_id)
 		draw_face(Block.TOP_FACE, block_pos_world, texture_slice)
 
 	if is_transparent(block_pos_chunk.x, block_pos_chunk.y - 1, block_pos_chunk.z):
-		var texture_slice = BlockDatabase.get_texture_indices(block_id)[BlockDatabase.Side.BOTTOM] + \
+		var texture_slice = ItemsDatabase.get_texture_indices(block_id)[ItemsDatabase.Side.BOTTOM] + \
 			material.get_shader_parameter("texture_array").get_texture_slice_offset(block_id)
 		draw_face(Block.BOTTOM_FACE, block_pos_world, texture_slice)
 
 	if is_transparent(block_pos_chunk.x - 1, block_pos_chunk.y, block_pos_chunk.z):
-		var texture_slice = BlockDatabase.get_texture_indices(block_id)[BlockDatabase.Side.LEFT] + \
+		var texture_slice = ItemsDatabase.get_texture_indices(block_id)[ItemsDatabase.Side.LEFT] + \
 			material.get_shader_parameter("texture_array").get_texture_slice_offset(block_id)
 		draw_face(Block.LEFT_FACE, block_pos_world, texture_slice)
 
 	if is_transparent(block_pos_chunk.x + 1, block_pos_chunk.y, block_pos_chunk.z):
-		var texture_slice = BlockDatabase.get_texture_indices(block_id)[BlockDatabase.Side.RIGHT] + \
+		var texture_slice = ItemsDatabase.get_texture_indices(block_id)[ItemsDatabase.Side.RIGHT] + \
 			material.get_shader_parameter("texture_array").get_texture_slice_offset(block_id)
 		draw_face(Block.RIGHT_FACE, block_pos_world, texture_slice)
 
 	if is_transparent(block_pos_chunk.x, block_pos_chunk.y, block_pos_chunk.z + 1):
-		var texture_slice = BlockDatabase.get_texture_indices(block_id)[BlockDatabase.Side.FRONT] + \
+		var texture_slice = ItemsDatabase.get_texture_indices(block_id)[ItemsDatabase.Side.FRONT] + \
 			material.get_shader_parameter("texture_array").get_texture_slice_offset(block_id)
 		draw_face(Block.FRONT_FACE, block_pos_world, texture_slice)
 
 	if is_transparent(block_pos_chunk.x, block_pos_chunk.y, block_pos_chunk.z - 1):
-		var texture_slice = BlockDatabase.get_texture_indices(block_id)[BlockDatabase.Side.BACK] + \
+		var texture_slice = ItemsDatabase.get_texture_indices(block_id)[ItemsDatabase.Side.BACK] + \
 			material.get_shader_parameter("texture_array").get_texture_slice_offset(block_id)
 		draw_face(Block.BACK_FACE, block_pos_world, texture_slice)
 
@@ -116,7 +116,7 @@ func is_transparent(x, y, z) -> bool:
 	if  x >= 0 and x < DIMENSIONS.x and \
 		y >= 0 and y < DIMENSIONS.y and \
 		z >= 0 and z < DIMENSIONS.z:
-		return block_ids[x][y][z] == BlockDatabase.Id.AIR # And some glass blocks in the future
+		return block_ids[x][y][z] == ItemsDatabase.Id.AIR # And some glass blocks in the future
 	return true
 
 func draw_face(face: Array, block_pos_world: Vector3i, texture_slice: float) -> void:
@@ -145,11 +145,11 @@ func draw_face(face: Array, block_pos_world: Vector3i, texture_slice: float) -> 
 	surface_tool.add_triangle_fan([a, c, d], [uv_a, uv_c, uv_d], [], [Vector2(texture_slice, 0.0)], [normal])
 
 func is_solid(block_position: Vector3i) -> bool:
-	return block_ids[block_position.x][block_position.y][block_position.z] != BlockDatabase.Id.AIR
+	return block_ids[block_position.x][block_position.y][block_position.z] != ItemsDatabase.Id.AIR
 
 func calc_world_pos_by_chunk_pos(input: Vector3i) -> Vector3i:
 	return Vector3i(chunk_position.x * DIMENSIONS.x + input.x, input.y, chunk_position.y * DIMENSIONS.z + input.z)
 
-func set_block(block_pos: Vector3i, block_id: BlockDatabase.Id):
+func set_block(block_pos: Vector3i, block_id: ItemsDatabase.Id):
 	block_ids[block_pos.x][block_pos.y][block_pos.z] = block_id
 	draw()

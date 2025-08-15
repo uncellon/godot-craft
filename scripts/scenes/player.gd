@@ -22,19 +22,8 @@ const HOTBAR_CAPACITY = 9
 var look_sensetivity = 0.002
 var hotbar_selected_item_index = 0
 
-# Temporary inventory
-var inventory = {
-	0: {
-		BlockDatabase.Id.PLANKS: 1
-	},
-	1: {
-		BlockDatabase.Id.COBBLESTONE: 1
-	},
-	2: {
-		BlockDatabase.Id.STONE: 1
-	}
-}
-var selected_block_id = BlockDatabase.Id.AIR
+var inventory = Inventory.new()
+var selected_block_id = ItemsDatabase.Id.AIR
 
 ################################################################################
 # On-ready variables                                                           #
@@ -49,6 +38,23 @@ var selected_block_id = BlockDatabase.Id.AIR
 ################################################################################
 
 func _ready() -> void:
+	# Temporary inventory
+	var grass_stack = Stack.new()
+	grass_stack.set_item_id(ItemsDatabase.Id.GRASS)
+	grass_stack.set_item_count(1)
+
+	var stone_stack = Stack.new()
+	stone_stack.set_item_id(ItemsDatabase.Id.STONE)
+	stone_stack.set_item_count(1)
+
+	var cobblestone_stack = Stack.new()
+	cobblestone_stack.set_item_id(ItemsDatabase.Id.COBBLESTONE)
+	cobblestone_stack.set_item_count(1)
+
+	inventory.set_stack_at(Inventory.CAPACITY - 9, grass_stack)
+	inventory.set_stack_at(Inventory.CAPACITY - 8, stone_stack)
+	inventory.set_stack_at(Inventory.CAPACITY - 7, cobblestone_stack)
+
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_set_hotbar_selected_item_index(0)
 
@@ -84,7 +90,7 @@ func _physics_process(delta: float) -> void:
 			chunk_manager.destroy_block(
 				ray_cast_3d.get_collision_point() - (ray_cast_3d.get_collision_normal() / 2)
 			)
-	if Input.is_action_just_pressed("right_click") and selected_block_id != BlockDatabase.Id.AIR:
+	if Input.is_action_just_pressed("right_click") and selected_block_id != ItemsDatabase.Id.AIR:
 		if ray_cast_3d.is_colliding():
 			chunk_manager.place_block(
 				ray_cast_3d.get_collision_point() + (ray_cast_3d.get_collision_normal() / 2), selected_block_id
@@ -138,5 +144,6 @@ func _set_hotbar_selected_item_index(value: int):
 	hotbar_selected_item_index = value
 	hotbar_selected_index_changed.emit(hotbar_selected_item_index)
 
-	if inventory.has(value):
-		selected_block_id = inventory[value].keys()[0]
+	var selected_stack: Stack = inventory.get_stack_at(Inventory.CAPACITY - 9 + value)
+	if selected_stack != null:
+		selected_block_id = selected_stack.get_item_id()

@@ -107,9 +107,9 @@ func unload_distant_chunks() -> void:
 			loaded_chunks.erase(chunk_pos)
 
 func destroy_block(world_pos: Vector3) -> void:
-	_modify_block(world_pos, BlockDatabase.Id.AIR)
+	_modify_block(world_pos, ItemsDatabase.Id.AIR)
 
-func place_block(world_pos: Vector3, block_id: BlockDatabase.Id) -> void:
+func place_block(world_pos: Vector3, block_id: ItemsDatabase.Id) -> void:
 	_modify_block(world_pos, block_id)
 
 func _get_chunk_and_local_pos(world_pos: Vector3) -> Dictionary:
@@ -130,7 +130,7 @@ func _get_chunk_and_local_pos(world_pos: Vector3) -> Dictionary:
 		"local_pos": local_pos
 	}
 
-func _modify_block(world_pos: Vector3, block_id: BlockDatabase.Id) -> bool:
+func _modify_block(world_pos: Vector3, block_id: ItemsDatabase.Id) -> bool:
 	var positions = _get_chunk_and_local_pos(world_pos)
 
 	if loaded_chunks.has(positions.chunk_pos):

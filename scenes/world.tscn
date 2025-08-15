@@ -52,3 +52,4 @@ chunk_material = ExtResource("5_71j4m")
 [node name="GameUI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("6_qfnet")]
 script = ExtResource("7_i7141")
 player = NodePath("../Player")
+chunk_material = ExtResource("5_71j4m")

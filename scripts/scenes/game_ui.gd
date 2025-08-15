@@ -5,6 +5,7 @@ extends Control
 ################################################################################
 
 @export var player: Player
+@export var chunk_material: Material # Material used to preview blocks
 
 ################################################################################
 # Members                                                                      #
@@ -31,6 +32,8 @@ func _ready() -> void:
 	player.hotbar_selected_index_changed.connect(_set_hotbar_selected_index)
 	_set_hotbar_selected_index(player.hotbar_selected_item_index)
 
+	_draw_hotbar()
+
 func _process(_delta: float) -> void:
 	pass
 
@@ -40,3 +43,9 @@ func _process(_delta: float) -> void:
 
 func _set_hotbar_selected_index(value: int):
 	hotbar_selection_texture_rect.position.x = hotbar_start_x + hotbar_step * value
+
+func _draw_hotbar():
+	for i in range(Inventory.CAPACITY - 9, Inventory.CAPACITY):
+		var stack = player.inventory.get_stack_at(i)
+		if stack == null:
+			continue

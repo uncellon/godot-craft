@@ -18,8 +18,8 @@ var noise = FastNoiseLite.new()
 # Methods                                                                      #
 ################################################################################
 
-func get_block_id(block_pos: Vector3i) -> BlockDatabase.Id:
+func get_block_id(block_pos: Vector3i) -> ItemsDatabase.Id:
 	var current_noise = 1 + NOISE_FACTOR + noise.get_noise_2d(block_pos.x, block_pos.z) * NOISE_FACTOR
 	if block_pos.y < current_noise:
-		return BlockDatabase.Id.GRASS
-	return BlockDatabase.Id.AIR
+		return ItemsDatabase.Id.GRASS
+	return ItemsDatabase.Id.AIR

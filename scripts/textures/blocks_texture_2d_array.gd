@@ -17,9 +17,9 @@ var last_free_index: int = 0
 func _init() -> void:
 	var loaded_textures = []
 
-	for block_id in BlockDatabase.BLOCKS:
+	for block_id in ItemsDatabase.BLOCKS:
 		slice_offsets_by_ids[block_id] = last_free_index
-		for texture_path in BlockDatabase.get_texture_paths(block_id):
+		for texture_path in ItemsDatabase.get_texture_paths(block_id):
 			last_free_index = last_free_index + 1
 
 			var res = ResourceLoader.load(texture_path)
@@ -39,5 +39,5 @@ func _init() -> void:
 # Custom methods                                                               #
 ################################################################################
 
-func get_texture_slice_offset(id: BlockDatabase.Id) -> int:
+func get_texture_slice_offset(id: ItemsDatabase.Id) -> int:
 	return slice_offsets_by_ids[id]

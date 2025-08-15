@@ -6,7 +6,7 @@ extends AbstractChunkGenerator
 # Methods                                                                      #
 ################################################################################
 
-func get_block_id(block_pos: Vector3i) -> BlockDatabase.Id:
+func get_block_id(block_pos: Vector3i) -> ItemsDatabase.Id:
 	if block_pos.y < 1:
-		return BlockDatabase.Id.GRASS
-	return BlockDatabase.Id.AIR
+		return ItemsDatabase.Id.GRASS
+	return ItemsDatabase.Id.AIR
